@@ -958,7 +958,7 @@
   //         that has to come from you; it holds DOOM.EXE and DOOM1.WAD.
   // JSDOS : the js-dos runtime. Loaded from their CDN, so this needs a
   //         connection. Point it at a local copy to go fully offline.
-  var DOS_BUNDLE = 'doom-v11.jsdos';
+  var DOS_BUNDLE = 'doom-v12.jsdos';
   var DOS_JS     = 'https://v8.js-dos.com/latest/js-dos.js';
   var DOS_CSS    = 'https://v8.js-dos.com/latest/js-dos.css';
   // =======================================================
@@ -990,7 +990,7 @@
       '.msg .warn{color:#ff9b7a}</style></head><body>' +
       '<div id="dos"><div class="msg">Loading DOSBox...</div></div>' +
       '<script>(function(){' +
-      'var BUNDLE=' + JSON.stringify(DOS_BUNDLE + '?v=11') + ';' +
+      'var BUNDLE=' + JSON.stringify(DOS_BUNDLE + '?v=12') + ';' +
       'var host=document.getElementById("dos");' +
       'function tell(s){ try{ parent.postMessage({dos:s},"*"); }catch(e){} }' +
       'function fail(w){ tell("error");' +
