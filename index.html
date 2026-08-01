@@ -243,8 +243,10 @@
   .tb-close:focus-visible{outline:2px dotted #fff;outline-offset:1px}
 
   /* ---- DOSBox window ---- */
-  .dos-backdrop{position:fixed;inset:0;background:rgba(0,32,32,.82);display:flex;
-    align-items:center;justify-content:center;padding:16px;z-index:250}
+  /* Sits above the DOS screen (z-index 300), so running DOOM from the prompt
+     opens over the black terminal rather than behind it. */
+  .dos-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.86);display:flex;
+    align-items:center;justify-content:center;padding:16px;z-index:400}
   .dos-backdrop[hidden]{display:none}
   .dos-win{width:100%;max-width:900px;background:var(--silver);display:flex;
     flex-direction:column;
@@ -332,7 +334,7 @@
     <div class="win-body">
 
       <div class="masthead">
-        <p class="kicker">Collection Browser v2.2</p>
+        <p class="kicker">Collection Browser v2.3</p>
         <h1>C:\JARED\COLLECTION</h1>
         <div class="ledger-stats" id="statsLine"></div>
       </div>
@@ -718,7 +720,7 @@
       line('');
       line('.            <DIR>        07-30-26   9:41a', 'dim');
       line('..           <DIR>        07-30-26   9:41a', 'dim');
-      line('JARED    EXE    469,355  07-30-26   9:41a');
+      line('JARED    EXE    469,734  07-30-26   9:41a');
       line('HAHA     EXE      57,344  03-14-96  11:02p');
       line('RESET    EXE      12,288  11-02-95   4:20p');
       line('DOOM     EXE   2,182,283  12-10-93  12:00a');
@@ -726,7 +728,7 @@
       line('AUTOEXEC BAT         412  08-24-95  12:00p');
       line('CONFIG   SYS         288  08-24-95  12:00p');
       line('README   TXT       1,204  01-08-94   7:15p', 'dim');
-      line('        8 file(s)  6,919,194 bytes');
+      line('        8 file(s)  6,919,573 bytes');
       line('        2 dir(s)   412,876,800 bytes free');
     } else if(cmd === 'TYPEAUTOEXEC.BAT' || cmd === 'TYPEAUTOEXEC' ||
               cmd === 'AUTOEXEC.BAT' || cmd === 'AUTOEXEC'){
@@ -763,7 +765,7 @@
     focusInput();
   }
 
-  var LOGO = ["\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550", "  C:\\JARED\\COLLECTION", "  Collection Browser   v2.2", "  Copyright (C) 1994-2026  Jared", "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"];
+  var LOGO = ["\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550", "  C:\\JARED\\COLLECTION", "  Collection Browser   v2.3", "  Copyright (C) 1994-2026  Jared", "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"];
   // The format gag. Runs a convincing percentage counter, then admits it was
   // never going to happen — nothing here can actually delete anything.
   function confirmWipe(){
@@ -906,7 +908,14 @@
     var back = document.getElementById('dosBackdrop');
     if(!back) return;
     back.hidden = true;
-    document.documentElement.style.overflow = '';
+    // If the DOS screen is still up, keep the caret there rather than dropping
+    // the user into the archive behind it.
+    if(!finished){
+      document.documentElement.style.overflow = 'hidden';
+      focusInput();
+    } else {
+      document.documentElement.style.overflow = '';
+    }
   }
   var dosX = document.getElementById('dosClose');
   if(dosX) dosX.addEventListener('click', closeDos);

@@ -2,6 +2,23 @@
 
 ---
 
+## v2.3
+
+**DOOM**
+- `DOOM.EXE` at the DOS prompt now runs the shareware episode in-page through DOSBox, instead of sending you off to another site.
+- Ships as a self-contained `doom.jsdos` bundle (1.96 MB) holding the executable, the WAD and a DOSBox config — SVGA, 16 MB of RAM, and a Sound Blaster 16 at port 220 / IRQ 5 to match the numbers the boot screen prints.
+- The emulator opens in a Windows 95–styled window over the DOS terminal, and closing it returns the caret to the prompt rather than dropping you into the archive behind.
+
+**Fixes**
+- The DOSBox window was stacked below the DOS screen and rendered behind it. Raised above.
+- Running DOOM injected the emulator's stylesheet into the page, which restyled every button and tab on the site. The emulator now runs inside an iframe so its CSS can't reach the page.
+- The status bar reported a negative number of items without photographs. It was subtracting both the stored-photo and eBay-link totals from the item count, double-counting everything that had both — by now nearly the whole catalogue.
+
+**Notes**
+- DOOM's executable and WAD must come from the same release. A v1.1 engine looks for a split `STABARL`/`STABARR` status bar, which later WADs replaced with a single `STBAR`, and the mismatch stalls startup.
+
+---
+
 ## v2.2
 
 **Admin page**
