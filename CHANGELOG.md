@@ -6,14 +6,30 @@
 
 **Content**
 - Photographs added for the last nine catalogued items that had no image of their own: the sealed 3DFX Voodoo 3 3000, the iPad 6th generation, the Braava 380, the GTX 1070 Founders Edition, the Emerson 13" TV/DVD combo, the Rift + Touch bundle, the Apple Watch Series 2, the Klydoclock and the i7-7700.
-- Photograph coverage now stands at 726 of 815 items.
+- Photographs added for the two advance screening passes: I-Spy (2002) and Fred Claus (2007).
+- Photograph coverage now stands at 728 items.
+- Fred Claus pass dated 4 November 2007 from the invitation itself, replacing the purchase date on the record. Notes reduced to *advance screening pass, admits two*.
+- Masthead and DOS boot banner read *Collection Browser v2.4*.
 
 **Data**
-- New chunk appended to `photos.js`, the nineteenth, keyed by item id as before. Everything shot to 320 px on the long edge, JPEG quality 72, transparency flattened to white — 7–14 KB apiece, in line with the existing entries.
-- `photo` flag raised from 0 to 1 for the nine ids in both the archive and the admin page. No records added, no markup or script touched.
+- Two chunks appended to `photos.js`, the nineteenth and twentieth, keyed by item id as before. Everything shot to 320 px on the long edge, JPEG quality 72, transparency flattened to white — 7–14 KB apiece, in line with the existing entries.
+- `photo` flag raised from 0 to 1 for the eleven ids in both the archive and the admin page. No records added, no markup or script touched.
+
+**Corrections**
+- `auto171` "Bryan Williams" was the Bryant Gumbel signed Seinfeld 8x10 already catalogued as `inv9` — the binder note read *two men shaking hands, signature not legible*, which is Gumbel and Seinfeld. The album entry has been folded into the inventory record: photograph rekeyed to `inv9`, duplicate removed, and the unidentified-signature note dropped now that the piece has a name.
+- `auto11` "Fred Haise" is Ray Charles — the album photograph is the signed portrait at the piano, captioned RAY CHARLES. Renamed and moved from *Space* to *Music*; the printed-name note, which read FRED W. HAISE, JR., went with it. The two genuine Haise signatures in the collection are unaffected, though only one now remains under that name.
+- `auto12` "Ray Charles" is Jerry Lee Lewis and Dennis Quaid — two men at a piano, from the *Great Balls of Fire!* period, both signatures on the print. Renamed, kept under *Music*, printed-name note cleared. The binder pass had mislabelled this pair and `auto11` in tandem; the collection now holds one Ray Charles rather than two.
+- Catalogue count 815 → 814. Autographs 183 → 182; original collection 198 → 197. Photograph coverage holds at 728, now of 814.
+
+**Genres**
+- *Notable Figures* renamed **Misc**.
+- *Politics & News* renamed **Politics**.
+- Geraldo Rivera moved from Politics to Misc.
+- Autographs now read: Television 62, Film 52, Comedy 19, Music 15, Animation 12, Sports 7, Politics 5, Misc 5, Space 5.
 
 **Notes**
 - Each entry in `photos.js` is a JSON *string* rather than an object, parsed one per tick so a phone never blocks on a single large parse. Adding photographs means appending another string to the array, not merging into an existing one; chunks are best kept under roughly 600 KB.
+- The I-Spy pass is recorded as *Famke Janssen – Eddie Murphy*, but the artwork bills Eddie Murphy and Owen Wilson. Left as found.
 - The box art now attached to the i7-7700 is the unlocked K-series retail packaging. Either the photograph is of the wrong box or the item is a 7700K and the record needs renaming — flagged rather than guessed at.
 
 ---
