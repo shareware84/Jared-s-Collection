@@ -2,6 +2,22 @@
 
 ---
 
+## v2.4
+
+**Content**
+- Photographs added for the last nine catalogued items that had no image of their own: the sealed 3DFX Voodoo 3 3000, the iPad 6th generation, the Braava 380, the GTX 1070 Founders Edition, the Emerson 13" TV/DVD combo, the Rift + Touch bundle, the Apple Watch Series 2, the Klydoclock and the i7-7700.
+- Photograph coverage now stands at 726 of 815 items.
+
+**Data**
+- New chunk appended to `photos.js`, the nineteenth, keyed by item id as before. Everything shot to 320 px on the long edge, JPEG quality 72, transparency flattened to white — 7–14 KB apiece, in line with the existing entries.
+- `photo` flag raised from 0 to 1 for the nine ids in both the archive and the admin page. No records added, no markup or script touched.
+
+**Notes**
+- Each entry in `photos.js` is a JSON *string* rather than an object, parsed one per tick so a phone never blocks on a single large parse. Adding photographs means appending another string to the array, not merging into an existing one; chunks are best kept under roughly 600 KB.
+- The box art now attached to the i7-7700 is the unlocked K-series retail packaging. Either the photograph is of the wrong box or the item is a 7700K and the record needs renaming — flagged rather than guessed at.
+
+---
+
 ## v2.3
 
 **DOOM**
