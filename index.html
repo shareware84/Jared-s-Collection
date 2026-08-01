@@ -718,7 +718,7 @@
       line('');
       line('.            <DIR>        07-30-26   9:41a', 'dim');
       line('..           <DIR>        07-30-26   9:41a', 'dim');
-      line('JARED    EXE    468,163  07-30-26   9:41a');
+      line('JARED    EXE    469,355  07-30-26   9:41a');
       line('HAHA     EXE      57,344  03-14-96  11:02p');
       line('RESET    EXE      12,288  11-02-95   4:20p');
       line('DOOM     EXE   2,182,283  12-10-93  12:00a');
@@ -726,7 +726,7 @@
       line('AUTOEXEC BAT         412  08-24-95  12:00p');
       line('CONFIG   SYS         288  08-24-95  12:00p');
       line('README   TXT       1,204  01-08-94   7:15p', 'dim');
-      line('        8 file(s)  6,918,002 bytes');
+      line('        8 file(s)  6,919,194 bytes');
       line('        2 dir(s)   412,876,800 bytes free');
     } else if(cmd === 'TYPEAUTOEXEC.BAT' || cmd === 'TYPEAUTOEXEC' ||
               cmd === 'AUTOEXEC.BAT' || cmd === 'AUTOEXEC'){
@@ -854,52 +854,52 @@
     if(dosStarted) return;
     dosStarted = true;
 
-    function msg(html){ stage.innerHTML = '<div class="dos-msg">' + html + '</div>'; }
-    msg('Loading DOSBox...');
+    // The emulator runs inside an iframe, not in this document. js-dos ships a
+    // stylesheet that restyles buttons and inputs globally; loaded into the main
+    // page it repainted the whole interface. An iframe keeps its CSS to itself.
+    status.textContent = 'Loading DOSBox...';
+    var doc =
+      '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+      '<link rel="stylesheet" href="' + DOS_CSS + '">' +
+      '<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}' +
+      '#dos{width:100%;height:100%}' +
+      '.msg{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;' +
+      'align-items:center;justify-content:center;padding:24px;text-align:center;' +
+      'font:17px/1.45 monospace;color:#cfcfcf}' +
+      '.msg code{background:#222;color:#ffd9a0;padding:1px 6px}' +
+      '.msg .warn{color:#ff9b7a}</style></head><body>' +
+      '<div id="dos"><div class="msg">Loading DOSBox...</div></div>' +
+      '<script>(function(){' +
+      'var BUNDLE=' + JSON.stringify(DOS_BUNDLE) + ';' +
+      'var host=document.getElementById("dos");' +
+      'function tell(s){ try{ parent.postMessage({dos:s},"*"); }catch(e){} }' +
+      'function fail(w){ tell("error");' +
+        'host.innerHTML=\'<div class="msg"><span class="warn">\'+w+\'</span>\'+' +
+        '\'<div>Place a bundle named <code>\'+BUNDLE+\'</code> next to index.html, \'+' +
+        '\'or change DOS_BUNDLE in the page source.</div></div>\'; }' +
+      'function boot(){ if(typeof Dos!=="function"){ fail("The js-dos runtime did not load."); return; }' +
+        'try{ host.innerHTML=""; tell("running");' +
+        'Dos(host,{url:BUNDLE,autoStart:true,kiosk:true}); }' +
+        'catch(e){ fail("DOSBox failed to start: "+(e&&e.message?e.message:e)); } }' +
+      'var sc=document.createElement("script"); sc.src=' + JSON.stringify(DOS_JS) + ';' +
+      'sc.onload=boot; sc.onerror=function(){ fail("Could not reach the js-dos runtime."); };' +
+      'document.head.appendChild(sc);' +
+      '})();<\/script></body></html>';
 
-    function fail(what){
-      status.textContent = 'Could not start';
-      msg('<span class="warn">' + what + '</span>' +
-          '<div>Put a bundle named <code>' + DOS_BUNDLE + '</code> next to ' +
-          '<code>index.html</code>, or edit <code>DOS_BUNDLE</code> in this file ' +
-          'to point at the one you have.</div>');
-    }
+    var f = document.createElement('iframe');
+    f.setAttribute('title', 'DOSBox');
+    f.setAttribute('allow', 'autoplay; fullscreen; gamepad');
+    f.srcdoc = doc;
+    stage.innerHTML = '';
+    stage.appendChild(f);
+    f.focus();
 
-    // stylesheet first so the emulator lays out correctly
-    if(!document.querySelector('link[data-jsdos]')){
-      var l = document.createElement('link');
-      l.rel = 'stylesheet'; l.href = DOS_CSS; l.setAttribute('data-jsdos','1');
-      document.head.appendChild(l);
-    }
-
-    function boot(){
-      if(typeof window.Dos !== 'function'){
-        fail('The js-dos runtime did not load.');
-        return;
-      }
-      try{
-        status.textContent = 'Running';
-        stage.innerHTML = '';
-        window.Dos(stage, {
-          url: DOS_BUNDLE,
-          autoStart: true,
-          kiosk: true,
-          onEvent: function(ev){
-            if(ev === 'emu-ready') status.textContent = 'Ready';
-            if(ev === 'bnd-play') status.textContent = 'Running';
-          }
-        });
-      }catch(err){
-        fail('DOSBox failed to start: ' + (err && err.message ? err.message : err));
-      }
-    }
-
-    if(typeof window.Dos === 'function'){ boot(); return; }
-    var sc = document.createElement('script');
-    sc.src = DOS_JS;
-    sc.onload = boot;
-    sc.onerror = function(){ fail('Could not reach the js-dos runtime.'); };
-    document.head.appendChild(sc);
+    window.addEventListener('message', function(ev){
+      if(!ev.data || !ev.data.dos) return;
+      status.textContent = ev.data.dos === 'running' ? 'Running'
+                         : ev.data.dos === 'error'   ? 'Could not start'
+                         : 'Loading...';
+    });
   }
 
   function closeDos(){
@@ -1155,7 +1155,10 @@ window.addEventListener('error', function(ev){
     const withUrl = ITEMS.filter(function(i){return i.image;}).length;
     const withPhoto = ITEMS.filter(function(i){return i.photo;}).length;
     const loaded = Object.keys(PHOTOS).length;
-    const noneAtAll = ITEMS.length - withUrl - withPhoto;
+    // Count items with neither source directly. Subtracting both totals from the
+    // item count double-subtracts everything that has a stored photo AND an eBay
+    // URL — which is now nearly everything, so the figure went negative.
+    const noneAtAll = ITEMS.filter(function(i){ return !i.photo && !i.image; }).length;
     const nOk = Object.keys(okIds).length, nBad = Object.keys(badIds).length;
     let html = '<span class="dot emb"></span><b>' + loaded + '</b> of ' + withPhoto + ' stored photos loaded';
     if(window.__photosFailed){
