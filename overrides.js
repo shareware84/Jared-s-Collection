@@ -10,5 +10,14 @@ window.__OVERRIDES = {
  },
  "inv647": {
   "category": "Memorabilia"
+ },
+ "inv309": {
+  "hidden": 1
+ },
+ "inv255": {
+  "hidden": 1
+ },
+ "inv3": {
+  "sub": "Sports"
  }
 };
