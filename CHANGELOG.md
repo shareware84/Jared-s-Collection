@@ -2,37 +2,51 @@
 
 ---
 
-## v2.4
+## v2.5
 
 **Content**
 - Photographs added for the last nine catalogued items that had no image of their own: the sealed 3DFX Voodoo 3 3000, the iPad 6th generation, the Braava 380, the GTX 1070 Founders Edition, the Emerson 13" TV/DVD combo, the Rift + Touch bundle, the Apple Watch Series 2, the Klydoclock and the i7-7700.
 - Photographs added for the two advance screening passes: I-Spy (2002) and Fred Claus (2007).
 - Photographs added for the Panasonic KXL-D720 CD-ROM drive; replacements for the two Sony Magic Link entries (the loose unit and the sealed headset bundle) and the Quest 2 silicone cover.
-- Photograph coverage now stands at 729 items.
+- Photograph added for the Bob Camp signed Ren & Stimpy pencil drawing, dated 2021 in the artist's own hand.
+- Photograph coverage now stands at 730 items.
 - Jim Davis Garfield letter dated 7 November 1996, read off the letter itself — the first album piece to carry a date at all; the other 168 have none.
 - Fred Claus pass dated 4 November 2007 from the invitation itself, replacing the purchase date on the record. Notes reduced to *advance screening pass, admits two*.
-- Masthead and DOS boot banner read *Collection Browser v2.4*.
+- Masthead and DOS boot banner read *Collection Browser v2.5*.
+- The archive is now called `index.html`, and `jareds-archive.html` is gone. The admin page, the changelog and every relative path have always assumed `index.html` at the far end, so the old name only survived as a rename done from memory at deploy time &mdash; and as a second copy that could quietly fall out of step with the first.
 
 **Data**
-- Three chunks appended to `photos.js`, the nineteenth through twenty-first, keyed by item id as before. Everything shot to 320 px on the long edge, JPEG quality 72, transparency flattened to white — 7–14 KB apiece, in line with the existing entries.
+- Four chunks appended to `photos.js`, the nineteenth through twenty-second, keyed by item id as before. Everything shot to 320 px on the long edge, JPEG quality 72, transparency flattened to white — 7–14 KB apiece, in line with the existing entries.
 - `photo` flag raised from 0 to 1 for the eleven ids in both the archive and the admin page. No records added, no markup or script touched.
 
 **Dates**
 - Dates now display as *November 7, 1996* rather than the raw `1996-11-07`, in the item record and in the admin table alike. Storage stays ISO so sorting is unaffected; partial dates degrade gracefully — a bare year shows as the year, a year and month as *May 2019*.
 
 **Fixes**
-- `photos.js` is now requested as `photos.js?v=2.4` from both pages. The filename never changes between releases, so browsers were serving the cached copy against a freshly uploaded catalogue — any photograph that moved to a different item id sat on *LOADING PHOTO* indefinitely while everything else appeared normal. Bump the query string on each release.
+- `photos.js` is now requested as `photos.js?v=2.5` from both pages. The filename never changes between releases, so browsers were serving the cached copy against a freshly uploaded catalogue — any photograph that moved to a different item id sat on *LOADING PHOTO* indefinitely while everything else appeared normal. Bump the query string on each release.
 
 **Corrections**
 - `auto171` "Bryan Williams" was the Bryant Gumbel signed Seinfeld 8x10 already catalogued as `inv9` — the binder note read *two men shaking hands, signature not legible*, which is Gumbel and Seinfeld. The album entry has been folded into the inventory record: photograph rekeyed to `inv9`, duplicate removed, and the unidentified-signature note dropped now that the piece has a name.
 - `auto11` "Fred Haise" is Ray Charles — the album photograph is the signed portrait at the piano, captioned RAY CHARLES. Renamed and moved from *Space* to *Music*; the printed-name note, which read FRED W. HAISE, JR., went with it. The two genuine Haise signatures in the collection are unaffected, though only one now remains under that name.
 - `auto12` "Ray Charles" is Jerry Lee Lewis and Dennis Quaid — two men at a piano, from the *Great Balls of Fire!* period, both signatures on the print. Renamed, kept under *Music*, printed-name note cleared. The binder pass had mislabelled this pair and `auto11` in tandem; the collection now holds one Ray Charles rather than two.
-- Catalogue count 815 → 814. Autographs 183 → 182; original collection 198 → 197, then 195 with the two removals below. Photograph coverage holds at 729, now of 814.
+- Catalogue count 815 → 814. Autographs 183 → 182; original collection 198 → 197, then 195 with the two removals below. Photograph coverage holds at 730, now of 814.
 
-**Admin page**
+**Admin page** (kept local, not uploaded)
 - **Add a new item.** Name, category, sub-category, condition, brand, date, price and an original-collection flag, plus a photograph picked from disk &mdash; resized to 320px and JPEG'd in the browser, exactly as the catalogue photos were. New items land in the same table as everything else, so they can be renamed, recategorised, boosted or hidden immediately. They are written to `overrides.js` as `__NEW_ITEMS`; the archive maps them onto its own field names on load.
 - **Export photos.js.** The page already holds every photograph in memory, so it can now write the whole file back out with any new ones folded in, chunked at roughly 600 KB. Adding an item therefore means exporting both files and bumping the `?v=` on the photos.js tag.
-- **Site metrics.** A static file cannot count its own visitors &mdash; something has to receive the hit, so the archive now carries a GoatCounter tag. It counts a pageview on load and fires an event whenever an item record is opened, under `/item/<id>` with the item's name as the title. No cookies and no personal data: a path, a title, a referrer. The admin panel links through to the dashboard and can write a different code into `overrides.js` if the account ever changes. The admin page itself is deliberately not counted. Every call is wrapped, so a blocked or missing counter is a no-op rather than an error.
+- **Site metrics.** A static file cannot count its own visitors &mdash; something has to receive the hit, so the archive now carries a GoatCounter tag. It counts a pageview on load and fires an event whenever an item record is opened, under `/item/<id>` with the item's name as the title. No cookies and no personal data: a path, a title, a referrer. The admin page opens the dashboard in a new tab rather than framing it: it is kept off the server, and GoatCounter only permits framing from a whitelisted domain. Every call is wrapped, so a blocked or missing counter is a no-op rather than an error.
+
+**Photographs at two sizes**
+- Large versions now live as ordinary files in a `hi/` folder, named by item id &mdash; `hi/auto120.jpg`. 187 of them, 32.5 MB in total, at 1600px on the long edge.
+- No manifest and no sidecar to rebuild. The record view probes `hi/<id>.jpg` when it opens; if the file is there the pane swaps up to it once decoded, and if it isn't, the 320px version simply stays. Adding a high-resolution photograph is now nothing more than dropping a correctly named JPEG in the folder &mdash; no export step, no code change.
+- Records open on the small version immediately, so there is no empty pane and no flash while the large file loads. A missing file is a silent 404. Each image is cached separately by the browser, and only the opened item's file is ever fetched.
+- This replaces `photos-hi.js`, which is deleted. Base64 inside JavaScript added a third to every file, made all of them download together, and would have rewritten a multi-megabyte blob in git history on every edit &mdash; workable for fourteen items, not for a binder of autographs.
+- The rest of the catalogue cannot be upgraded this way. The other ~700 photographs exist only at the size they were embedded at in v2.0; the eBay originals are gone and the binder scans were downsampled on the way in. Enlarging those would invent detail rather than restore it.
+
+**Autographs**
+- The whole binder is in: 173 scans, 187 files in `hi/`, 32.5 MB, all at 1600px. Every autograph record in the catalogue now has a full-size version behind its thumbnail.
+- The leading number in each scan's filename is its catalogue id, which made the matching exact rather than a judgement by eye &mdash; 1 to 173, no gaps and no duplicates.
+- Four scans had no `auto` record: 27, 98, 171 and 172. All four turned out to be pieces catalogued on the inventory side instead, and each was identified by matching the scan against the stored thumbnail rather than by guesswork &mdash; 27 is the Mitch Hedberg ticket (`inv13`), 98 is Mark Hamill (`inv12`), 171 the Gumbel/Seinfeld 8x10 (`inv9`), 172 the Daniel Stern (`inv10`). Three of the four correlate perfectly with the thumbnail already on file, so the identification is not a judgement call. 171 is the piece merged earlier this version, which the album numbering independently confirms.
 
 **Browsing**
 - The original collection now leads the **All** tab on first load. Any deliberate action &mdash; a category, a sort, a search, a toggle &mdash; drops the pinning for the rest of the session, so it never fights what was actually asked for.
