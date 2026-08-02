@@ -1272,6 +1272,189 @@ window.addEventListener('error', function(ev){
     probe.src = url;
   }
 
+  const PAGE_SIZE = 75;
+
+  const CATEGORY_CODES = {
+    'Vintage Computing':'V.COMP','Vintage Gaming':'V.GAME','Autographs':'AUTOG',
+    'Press Kits':'PRESS','Laserdisc':'LSRDSC','VHS':'VHS','DVD':'DVD',
+    'Electronics':'ELECT','Memorabilia':'MEMO','Trading Cards':'CARDS',
+    'Audio/Media':'AUDIO','Misc':'MISC'
+  };
+
+  const ICONS = {
+    // --- specific objects, matched from the item name ---
+    'tv':'<rect x="10" y="22" width="80" height="50" rx="4"/><path d="M36 84h28M50 72v12"/><path d="M34 12l16 10 16-10"/>',
+    'monitor':'<rect x="8" y="20" width="84" height="48" rx="3"/><path d="M38 84h24M50 68v16"/><path d="M8 58h84"/>',
+    'vr':'<path d="M14 36h72a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H62l-5-7H43l-5 7H14a6 6 0 0 1-6-6V42a6 6 0 0 1 6-6z"/><path d="M20 36V28a6 6 0 0 1 6-6h48a6 6 0 0 1 6 6v8"/>',
+    'phone':'<rect x="33" y="8" width="34" height="84" rx="7"/><path d="M44 17h12"/><path d="M33 78h34"/>',
+    'tablet':'<rect x="22" y="8" width="56" height="84" rx="5"/><circle cx="50" cy="82" r="3.5"/><path d="M42 16h16"/>',
+    'ipod':'<rect x="31" y="8" width="38" height="84" rx="6"/><rect x="38" y="16" width="24" height="24" rx="2"/><circle cx="50" cy="64" r="15"/><circle cx="50" cy="64" r="4.5"/>',
+    'watch':'<rect x="33" y="30" width="34" height="40" rx="8"/><path d="M40 30V13h20v17M40 70v17h20V70"/><path d="M67 44h5"/>',
+    'laptop':'<path d="M24 20h52v42H24z"/><path d="M10 62h80l-7 14H17z"/>',
+    'tower':'<rect x="28" y="8" width="44" height="84" rx="3"/><path d="M37 20h26M37 30h26"/><circle cx="50" cy="52" r="4"/><path d="M37 70h26M37 80h14"/>',
+    'gpu':'<rect x="8" y="32" width="76" height="34" rx="2"/><circle cx="32" cy="49" r="11"/><circle cx="62" cy="49" r="8"/><path d="M18 66v9M34 66v9M50 66v9"/><path d="M84 40h8v18h-8"/>',
+    'cpu':'<rect x="30" y="30" width="40" height="40" rx="3"/><rect x="42" y="42" width="16" height="16"/><path d="M42 30V19M58 30V19M42 81V70M58 81V70M30 42H19M30 58H19M81 42H70M81 58H70"/>',
+    'router':'<rect x="12" y="58" width="76" height="26" rx="4"/><path d="M30 58V36M50 58V26M70 58V36"/><circle cx="30" cy="32" r="3"/><circle cx="50" cy="22" r="3"/><circle cx="70" cy="32" r="3"/><path d="M26 72h6M40 72h6"/>',
+    'robot':'<circle cx="50" cy="52" r="32"/><path d="M22 40h56"/><circle cx="50" cy="56" r="9"/><circle cx="38" cy="30" r="3"/><circle cx="62" cy="30" r="3"/>',
+    'clock':'<circle cx="50" cy="52" r="32"/><path d="M50 30v22l14 9"/><path d="M50 12v8"/>',
+    'keyboard':'<rect x="6" y="32" width="88" height="38" rx="4"/><path d="M18 44h8M32 44h8M46 44h8M60 44h8M74 44h8M18 54h8M32 54h8M46 54h8M60 54h8M74 54h8M34 64h32"/>',
+    'printer':'<path d="M28 10h44v22H28z"/><rect x="10" y="32" width="80" height="30" rx="3"/><path d="M28 62h44v28H28z"/><circle cx="78" cy="43" r="3"/><path d="M38 72h24M38 80h24"/>',
+    'camera':'<path d="M12 30h18l6-9h28l6 9h18a4 4 0 0 1 4 4v42a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V34a4 4 0 0 1 4-4z"/><circle cx="50" cy="55" r="16"/><circle cx="50" cy="55" r="7"/>',
+    'headphones':'<path d="M18 60V46a32 32 0 0 1 64 0v14"/><rect x="8" y="56" width="16" height="28" rx="7"/><rect x="76" y="56" width="16" height="28" rx="7"/>',
+    'handheld':'<rect x="28" y="6" width="44" height="88" rx="6"/><rect x="36" y="16" width="28" height="24" rx="2"/><path d="M40 56v10M35 61h10"/><circle cx="62" cy="58" r="3.5"/><circle cx="62" cy="68" r="3.5"/>',
+    'cartridge':'<path d="M24 10h52v58l-11 22H35L24 68z"/><rect x="35" y="20" width="30" height="18" rx="2"/><path d="M38 86h24"/>',
+    'skateboard':'<path d="M10 44c0-7 10-11 40-11s40 4 40 11-10 11-40 11-40-4-40-11z"/><circle cx="30" cy="66" r="7"/><circle cx="70" cy="66" r="7"/><path d="M30 55v4M70 55v4"/>',
+    'gloves':'<path d="M26 42a20 20 0 0 1 40 0v16a13 13 0 0 1-13 13H39a13 13 0 0 1-13-13z"/><path d="M66 46h6a9 9 0 0 1 0 18h-6"/><path d="M36 71v11h24V71"/>',
+    'poster':'<rect x="22" y="8" width="56" height="84" rx="2"/><path d="M31 26h38M31 40h38M31 54h24"/><path d="M31 70h38"/>',
+    'cel':'<rect x="12" y="18" width="76" height="64" rx="2"/><circle cx="37" cy="40" r="9"/><path d="M20 74l18-20 13 12 11-15 18 23z"/>',
+    'photo':'<rect x="14" y="20" width="72" height="60" rx="2"/><path d="M14 68l20-19 15 13 12-9 25 19"/><circle cx="35" cy="38" r="6"/>',
+    'script':'<path d="M26 8h34l16 16v68H26z"/><path d="M60 8v16h16"/><path d="M35 40h30M35 52h30M35 64h18"/>',
+    'book':'<path d="M20 14h32a10 10 0 0 1 10 10v62a10 10 0 0 0-10-8H20z"/><path d="M80 14H62a10 10 0 0 0-10 10v62a10 10 0 0 1 10-8h18z"/>',
+    // --- category fallbacks ---
+    'Autographs':'<path d="M18 70c8-22 14-34 20-34 5 0 3 20 8 20s10-26 18-26 4 24 10 24 8-10 13-10"/><path d="M20 82h60"/><circle cx="74" cy="26" r="5"/>',
+    'Press Kits':'<path d="M14 38l8-14h56l8 14"/><path d="M14 38v40a4 4 0 0 0 4 4h64a4 4 0 0 0 4-4V38"/><path d="M14 38h72"/><path d="M40 50h20"/>',
+    'Laserdisc':'<circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="9"/>',
+    'VHS':'<rect x="12" y="26" width="76" height="48" rx="4"/><circle cx="34" cy="50" r="9"/><circle cx="66" cy="50" r="9"/><path d="M12 62h76"/>',
+    'DVD':'<circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="6"/><path d="M50 16v10M50 74v10M84 50H74M26 50H16"/>',
+    'Electronics':'<rect x="30" y="30" width="40" height="40" rx="3"/><path d="M42 30v-10M58 30v-10M42 80v-10M58 80v-10M30 42h-10M30 58h-10M80 42h-10M80 58h-10"/>',
+    'Memorabilia':'<path d="M50 16l10 20 22 3-16 15 4 22-20-11-20 11 4-22-16-15 22-3z"/>',
+    'Trading Cards':'<rect x="26" y="18" width="38" height="54" rx="4"/><rect x="38" y="28" width="38" height="54" rx="4"/>',
+    'Vintage Computing':'<rect x="16" y="16" width="68" height="52" rx="3"/><path d="M16 56h68"/><path d="M38 82h24M50 68v14"/>',
+    'Vintage Gaming':'<path d="M26 40h48a14 14 0 0 1 14 14v10a10 10 0 0 1-18 6l-6-8H36l-6 8a10 10 0 0 1-18-6V54a14 14 0 0 1 14-14z"/><path d="M36 50v12M30 56h12"/>',
+    'Audio/Media':'<rect x="12" y="28" width="76" height="44" rx="4"/><circle cx="36" cy="50" r="10"/><circle cx="64" cy="50" r="10"/>',
+    'Misc':'<path d="M14 36l36-18 36 18-36 18z"/><path d="M14 36v30l36 18 36-18V36"/><path d="M50 54v30"/>'
+  };
+  // Ordered most-specific-first: an "iPad with Wi-Fi" is a tablet, not a router,
+  // and an OMEN desktop is a tower even though it lists a GeForce card.
+  const ICON_RULES = [
+    [/oculus|quest|rift\b|virtual reality|\bvr\b/i, 'vr'],
+    [/\btelevision\b|\btv\b/i, 'tv'],
+    [/monitor|ultrawide/i, 'monitor'],
+    [/ipad|tablet/i, 'tablet'],
+    [/ipod|walkman|\bmp3\b|discman/i, 'ipod'],
+    [/iphone|smartphone|\bphone\b/i, 'phone'],
+    [/\bwatch\b/i, 'watch'],
+    [/laptop|macbook|powerbook/i, 'laptop'],
+    [/desktop|tower|\bomen\b|emachines|\bimac\b|packard bell/i, 'tower'],
+    [/geforce|gtx\b|radeon|graphics card|video card/i, 'gpu'],
+    [/\bcpu\b|processor|core\(tm\)|pentium|celeron/i, 'cpu'],
+    [/router|modem|wi-?fi\b|ethernet/i, 'router'],
+    [/roomba|braava|irobot|robot mop|robot vacuum/i, 'robot'],
+    [/\bclock\b/i, 'clock'],
+    [/keyboard/i, 'keyboard'],
+    [/printer|scanner/i, 'printer'],
+    [/camera|camcorder|polaroid/i, 'camera'],
+    [/headphone|speaker|stereo|boombox/i, 'headphones'],
+    [/game ?boy|game gear|handheld|\blynx\b/i, 'handheld'],
+    [/everdrive|cartridge/i, 'cartridge'],
+    [/skateboard|skate deck/i, 'skateboard'],
+    [/boxing glove|gloves/i, 'gloves'],
+    [/poster|one ?sheet/i, 'poster'],
+    [/\bcel\b|animation cel|signed drawing/i, 'cel'],
+    [/8x10|headshot|press photo|glossy/i, 'photo'],
+    [/script|screenplay/i, 'script'],
+    [/\bbook\b|paperback|hardcover|magazine/i, 'book']
+  ];
+
+  function iconKey(it){
+    // Only the title line: several records carry long descriptions underneath,
+    // and words in those ("...not included: headphones") shouldn't pick the icon.
+    const n = (it.name || '').split('\n')[0];
+    for(let i = 0; i < ICON_RULES.length; i++){
+      if(ICON_RULES[i][0].test(n)) return ICON_RULES[i][1];
+    }
+    return ICONS[it.category] ? it.category : 'Misc';
+  }
+
+  function iconSvg(cat){
+    return '<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3.2" '+
+           'stroke-linecap="round" stroke-linejoin="round">'+(ICONS[cat]||ICONS['Misc'])+'</svg>';
+  }
+  function placeholder(cat, label){
+    return '<div class="placeholder-img">'+iconSvg(cat)+
+           '<span class="ph-label">'+(label||'no photo on file')+'</span></div>';
+  }
+
+  // ---- eBay image candidate chain -------------------------------------
+  // eBay serves the same picture at several sizes. If the size recorded in the
+  // spreadsheet has been purged, another size often still resolves, so we walk
+  // a list of candidates before giving up on the image entirely.
+  const SIZES = ['500','1600','1000','800','640','400','300','225','140','96'];
+  function candidates(url){
+    const list = [url];
+    const m = url.match(/^(https:\/\/i\.ebayimg\.com\/images\/g\/[^\/]+\/)s-l(\d+)\.(jpe?g|png|webp)$/i);
+    if(m){
+      const base = m[1], ext = m[3];
+      SIZES.forEach(function(sz){
+        const u = base+'s-l'+sz+'.'+ext;
+        if(list.indexOf(u) === -1) list.push(u);
+      });
+    }
+    return list;
+  }
+
+  const okIds = {}, badIds = {};
+  function updateDiag(){
+    const withUrl = ITEMS.filter(function(i){return i.image;}).length;
+    const withPhoto = ITEMS.filter(function(i){return i.photo;}).length;
+    const loaded = Object.keys(PHOTOS).length;
+    // Count items with neither source directly. Subtracting both totals from the
+    // item count double-subtracts everything that has a stored photo AND an eBay
+    // URL — which is now nearly everything, so the figure went negative.
+    const noneAtAll = ITEMS.filter(function(i){ return !i.photo && !i.image; }).length;
+    const nOk = Object.keys(okIds).length, nBad = Object.keys(badIds).length;
+    let html = '<span class="dot emb"></span><b>' + loaded + '</b> of ' + withPhoto + ' stored photos loaded';
+    if(window.__photosFailed){
+      html = '<span class="dot bad"></span><b>photos.js not found</b> — keep it next to this file';
+    }
+    html += ' &nbsp;·&nbsp; <span class="dot ok"></span><b>' + nOk + '</b> loaded from eBay' +
+            (nBad ? ' &nbsp;·&nbsp; <span class="dot bad"></span><b>' + nBad + '</b> did not load' : '') +
+            ' &nbsp;·&nbsp; ' + noneAtAll + ' entries have no photo';
+    document.getElementById('diagLine').innerHTML = html;
+  }
+
+  function wire(img){
+    if(img.getAttribute('data-wired')) return;
+    img.setAttribute('data-wired','1');
+    let cands;
+    try { cands = JSON.parse(img.getAttribute('data-cands')); }
+    catch(e){ cands = [img.getAttribute('src')]; }
+    const id = img.getAttribute('data-item');
+    let idx = 0, done = false;
+    function fail(){
+      if(done) return;
+      idx++;
+      if(idx < cands.length){ img.src = cands[idx]; return; }
+      done = true;
+      if(id){ badIds[id] = 1; delete okIds[id]; }
+      updateDiag();
+      img.outerHTML = placeholder(img.getAttribute('data-icon'), 'photo unavailable');
+    }
+    img.addEventListener('error', fail);
+    img.addEventListener('load', function(){
+      if(done) return;
+      // eBay sometimes answers a dead link with a 1x1 stub instead of a 404
+      if(img.naturalWidth <= 2 || img.naturalHeight <= 2){ fail(); return; }
+      done = true;
+      if(id){ okIds[id] = 1; delete badIds[id]; }
+      updateDiag();
+    });
+    // If the inline src already finished loading before this ran, react now.
+    if(img.complete && img.naturalWidth > 2){
+      done = true;
+      if(id){ okIds[id] = 1; }
+      updateDiag();
+    } else if(img.complete && img.naturalWidth === 0){
+      fail();
+    }
+  }
+  function wireAll(root){
+    const imgs = root.querySelectorAll('img[data-cands]');
+    for(let i=0;i<imgs.length;i++){
+      try { wire(imgs[i]); } catch(e){ /* never let one image break the rest */ }
+    }
+  }
+
   function imgMarkup(it, big){
     const embedded = photoOf(it);
     if(embedded){
