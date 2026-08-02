@@ -23,6 +23,7 @@
 - Dates now display as *November 7, 1996* rather than the raw `1996-11-07`, in the item record and in the admin table alike. Storage stays ISO so sorting is unaffected; partial dates degrade gracefully — a bare year shows as the year, a year and month as *May 2019*.
 
 **Fixes**
+- Restored roughly 180 lines removed in error while the high-resolution tier was being rewired &mdash; `PAGE_SIZE`, the placeholder icon set and its matching rules, the eBay candidate chain, the status-line counter and the image retry wiring all went with the block that was replaced. The catalogue failed to build at all: *PAGE_SIZE is not defined*. Restored verbatim from v2.3 and verified by booting the whole script against a stub DOM, which now renders the grid rather than throwing.
 - `photos.js` is now requested as `photos.js?v=2.5` from both pages. The filename never changes between releases, so browsers were serving the cached copy against a freshly uploaded catalogue — any photograph that moved to a different item id sat on *LOADING PHOTO* indefinitely while everything else appeared normal. Bump the query string on each release.
 
 **Corrections**
