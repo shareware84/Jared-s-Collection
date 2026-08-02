@@ -7,19 +7,36 @@
 **Content**
 - Photographs added for the last nine catalogued items that had no image of their own: the sealed 3DFX Voodoo 3 3000, the iPad 6th generation, the Braava 380, the GTX 1070 Founders Edition, the Emerson 13" TV/DVD combo, the Rift + Touch bundle, the Apple Watch Series 2, the Klydoclock and the i7-7700.
 - Photographs added for the two advance screening passes: I-Spy (2002) and Fred Claus (2007).
-- Photograph coverage now stands at 728 items.
+- Photographs added for the Panasonic KXL-D720 CD-ROM drive; replacements for the two Sony Magic Link entries (the loose unit and the sealed headset bundle) and the Quest 2 silicone cover.
+- Photograph coverage now stands at 729 items.
+- Jim Davis Garfield letter dated 7 November 1996, read off the letter itself — the first album piece to carry a date at all; the other 168 have none.
 - Fred Claus pass dated 4 November 2007 from the invitation itself, replacing the purchase date on the record. Notes reduced to *advance screening pass, admits two*.
 - Masthead and DOS boot banner read *Collection Browser v2.4*.
 
 **Data**
-- Two chunks appended to `photos.js`, the nineteenth and twentieth, keyed by item id as before. Everything shot to 320 px on the long edge, JPEG quality 72, transparency flattened to white — 7–14 KB apiece, in line with the existing entries.
+- Three chunks appended to `photos.js`, the nineteenth through twenty-first, keyed by item id as before. Everything shot to 320 px on the long edge, JPEG quality 72, transparency flattened to white — 7–14 KB apiece, in line with the existing entries.
 - `photo` flag raised from 0 to 1 for the eleven ids in both the archive and the admin page. No records added, no markup or script touched.
+
+**Dates**
+- Dates now display as *November 7, 1996* rather than the raw `1996-11-07`, in the item record and in the admin table alike. Storage stays ISO so sorting is unaffected; partial dates degrade gracefully — a bare year shows as the year, a year and month as *May 2019*.
+
+**Fixes**
+- `photos.js` is now requested as `photos.js?v=2.4` from both pages. The filename never changes between releases, so browsers were serving the cached copy against a freshly uploaded catalogue — any photograph that moved to a different item id sat on *LOADING PHOTO* indefinitely while everything else appeared normal. Bump the query string on each release.
 
 **Corrections**
 - `auto171` "Bryan Williams" was the Bryant Gumbel signed Seinfeld 8x10 already catalogued as `inv9` — the binder note read *two men shaking hands, signature not legible*, which is Gumbel and Seinfeld. The album entry has been folded into the inventory record: photograph rekeyed to `inv9`, duplicate removed, and the unidentified-signature note dropped now that the piece has a name.
 - `auto11` "Fred Haise" is Ray Charles — the album photograph is the signed portrait at the piano, captioned RAY CHARLES. Renamed and moved from *Space* to *Music*; the printed-name note, which read FRED W. HAISE, JR., went with it. The two genuine Haise signatures in the collection are unaffected, though only one now remains under that name.
 - `auto12` "Ray Charles" is Jerry Lee Lewis and Dennis Quaid — two men at a piano, from the *Great Balls of Fire!* period, both signatures on the print. Renamed, kept under *Music*, printed-name note cleared. The binder pass had mislabelled this pair and `auto11` in tandem; the collection now holds one Ray Charles rather than two.
-- Catalogue count 815 → 814. Autographs 183 → 182; original collection 198 → 197. Photograph coverage holds at 728, now of 814.
+- Catalogue count 815 → 814. Autographs 183 → 182; original collection 198 → 197, then 195 with the two removals below. Photograph coverage holds at 729, now of 814.
+
+**Admin page**
+- **Add a new item.** Name, category, sub-category, condition, brand, date, price and an original-collection flag, plus a photograph picked from disk &mdash; resized to 320px and JPEG'd in the browser, exactly as the catalogue photos were. New items land in the same table as everything else, so they can be renamed, recategorised, boosted or hidden immediately. They are written to `overrides.js` as `__NEW_ITEMS`; the archive maps them onto its own field names on load.
+- **Export photos.js.** The page already holds every photograph in memory, so it can now write the whole file back out with any new ones folded in, chunked at roughly 600 KB. Adding an item therefore means exporting both files and bumping the `?v=` on the photos.js tag.
+- **Site metrics.** A static file cannot count its own visitors &mdash; something has to receive the hit, so the archive now carries a GoatCounter tag. It counts a pageview on load and fires an event whenever an item record is opened, under `/item/<id>` with the item's name as the title. No cookies and no personal data: a path, a title, a referrer. The admin panel links through to the dashboard and can write a different code into `overrides.js` if the account ever changes. The admin page itself is deliberately not counted. Every call is wrapped, so a blocked or missing counter is a no-op rather than an error.
+
+**Browsing**
+- The original collection now leads the **All** tab on first load. Any deliberate action &mdash; a category, a sort, a search, a toggle &mdash; drops the pinning for the rest of the session, so it never fights what was actually asked for.
+- Johnny Knoxville / Steve-O skateboard and the Taking on Tyson gloves removed from the original collection. It now stands at 195 items.
 
 **Genres**
 - *Notable Figures* renamed **Misc**.
