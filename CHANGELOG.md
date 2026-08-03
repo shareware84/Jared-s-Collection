@@ -5,13 +5,14 @@
 ## v2.5
 
 **Content**
-- Photographs added for the last nine catalogued items that had no image of their own: the sealed 3DFX Voodoo 3 3000, the iPad 6th generation, the Braava 380, the GTX 1070 Founders Edition, the Emerson 13" TV/DVD combo, the Rift + Touch bundle, the Apple Watch Series 2, the Klydoclock and the i7-7700.
+- Photographs added for the last nine cataloged items that had no image of their own: the sealed 3DFX Voodoo 3 3000, the iPad 6th generation, the Braava 380, the GTX 1070 Founders Edition, the Emerson 13" TV/DVD combo, the Rift + Touch bundle, the Apple Watch Series 2, the Klydoclock and the i7-7700.
 - Photographs added for the two advance screening passes: I-Spy (2002) and Fred Claus (2007).
 - Photographs added for the Panasonic KXL-D720 CD-ROM drive; replacements for the two Sony Magic Link entries (the loose unit and the sealed headset bundle) and the Quest 2 silicone cover.
+- Full-size photograph added for the Sony Pictures 2003 Preview Kit binder (`inv181`) — the binder open, showing the Geoffrey Ammer letter and the CD-ROM in its sleeve. The card keeps the closed-binder shot, so the record now opens onto a different and more informative view of the same object.
 - Photograph added for the Bob Camp signed Ren & Stimpy pencil drawing, dated 2021 in the artist's own hand.
 - Photograph coverage now stands at 730 items.
-- Jim Davis Garfield letter dated 7 November 1996, read off the letter itself — the first album piece to carry a date at all; the other 168 have none.
-- Fred Claus pass dated 4 November 2007 from the invitation itself, replacing the purchase date on the record. Notes reduced to *advance screening pass, admits two*.
+- Jim Davis Garfield letter dated November 7, 1996, read off the letter itself — the first album piece to carry a date at all; the other 168 have none.
+- Fred Claus pass dated November 4, 2007 from the invitation itself, replacing the purchase date on the record. Notes reduced to *advance screening pass, admits two*.
 - Masthead and DOS boot banner read *Collection Browser v2.5*.
 - The archive is now called `index.html`, and `jareds-archive.html` is gone. The admin page, the changelog and every relative path have always assumed `index.html` at the far end, so the old name only survived as a rename done from memory at deploy time &mdash; and as a second copy that could quietly fall out of step with the first.
 
@@ -23,17 +24,21 @@
 - Dates now display as *November 7, 1996* rather than the raw `1996-11-07`, in the item record and in the admin table alike. Storage stays ISO so sorting is unaffected; partial dates degrade gracefully — a bare year shows as the year, a year and month as *May 2019*.
 
 **Fixes**
-- Restored roughly 180 lines removed in error while the high-resolution tier was being rewired &mdash; `PAGE_SIZE`, the placeholder icon set and its matching rules, the eBay candidate chain, the status-line counter and the image retry wiring all went with the block that was replaced. The catalogue failed to build at all: *PAGE_SIZE is not defined*. Restored verbatim from v2.3 and verified by booting the whole script against a stub DOM, which now renders the grid rather than throwing.
-- `photos.js` is now requested as `photos.js?v=2.5` from both pages. The filename never changes between releases, so browsers were serving the cached copy against a freshly uploaded catalogue — any photograph that moved to a different item id sat on *LOADING PHOTO* indefinitely while everything else appeared normal. Bump the query string on each release.
+- Three photographs were lying on their side and are now upright: the Empty Nest cast photo (`auto17`), the Sony Pictures 2003 Preview Kit binder (`inv181`) and the boxed HP C1405B keyboard (`inv287`). The last two were stored portrait when the objects are wider than they are tall. `auto17` was rebuilt from the original scan at both sizes; the other two exist only as 320px thumbnails, so those were turned in place.
+- Orientation had to be judged by eye rather than read from the files: the scans came through Imgur, which strips EXIF, so every one of the 173 arrived with no orientation tag for the pipeline to act on. Photographs taken straight off a phone keep theirs and rotate automatically.
+- Spelling standardized to US English across the changelog, the page copy and the code comments &mdash; catalog rather than catalogue, recognizable, centered, labeled, behavior. Item names are untouched, since those are records rather than prose, and `aria-labelledby` keeps its spec spelling.
+- Restored roughly 180 lines removed in error while the high-resolution tier was being rewired &mdash; `PAGE_SIZE`, the placeholder icon set and its matching rules, the eBay candidate chain, the status-line counter and the image retry wiring all went with the block that was replaced. The catalog failed to build at all: *PAGE_SIZE is not defined*. Restored verbatim from v2.3 and verified by booting the whole script against a stub DOM, which now renders the grid rather than throwing.
+- `photos.js` is now requested as `photos.js?v=2.5` from both pages. The filename never changes between releases, so browsers were serving the cached copy against a freshly uploaded catalog — any photograph that moved to a different item id sat on *LOADING PHOTO* indefinitely while everything else appeared normal. Bump the query string on each release.
 
 **Corrections**
-- `auto171` "Bryan Williams" was the Bryant Gumbel signed Seinfeld 8x10 already catalogued as `inv9` — the binder note read *two men shaking hands, signature not legible*, which is Gumbel and Seinfeld. The album entry has been folded into the inventory record: photograph rekeyed to `inv9`, duplicate removed, and the unidentified-signature note dropped now that the piece has a name.
+- `auto171` "Bryan Williams" was the Bryant Gumbel signed Seinfeld 8x10 already cataloged as `inv9` — the binder note read *two men shaking hands, signature not legible*, which is Gumbel and Seinfeld. The album entry has been folded into the inventory record: photograph rekeyed to `inv9`, duplicate removed, and the unidentified-signature note dropped now that the piece has a name.
 - `auto11` "Fred Haise" is Ray Charles — the album photograph is the signed portrait at the piano, captioned RAY CHARLES. Renamed and moved from *Space* to *Music*; the printed-name note, which read FRED W. HAISE, JR., went with it. The two genuine Haise signatures in the collection are unaffected, though only one now remains under that name.
-- `auto12` "Ray Charles" is Jerry Lee Lewis and Dennis Quaid — two men at a piano, from the *Great Balls of Fire!* period, both signatures on the print. Renamed, kept under *Music*, printed-name note cleared. The binder pass had mislabelled this pair and `auto11` in tandem; the collection now holds one Ray Charles rather than two.
-- Catalogue count 815 → 814. Autographs 183 → 182; original collection 198 → 197, then 195 with the two removals below. Photograph coverage holds at 730, now of 814.
+- `auto12` "Ray Charles" is Jerry Lee Lewis and Dennis Quaid — two men at a piano, from the *Great Balls of Fire!* period, both signatures on the print. Renamed, kept under *Music*, printed-name note cleared. The binder pass had mislabeled this pair and `auto11` in tandem; the collection now holds one Ray Charles rather than two.
+- Catalog count 815 → 814. Autographs 183 → 182; original collection 198 → 197, then 195 with the two removals below. Photograph coverage holds at 730, now of 814.
 
 **Admin page** (kept local, not uploaded)
-- **Add a new item.** Name, category, sub-category, condition, brand, date, price and an original-collection flag, plus a photograph picked from disk &mdash; resized to 320px and JPEG'd in the browser, exactly as the catalogue photos were. New items land in the same table as everything else, so they can be renamed, recategorised, boosted or hidden immediately. They are written to `overrides.js` as `__NEW_ITEMS`; the archive maps them onto its own field names on load.
+- **Add a new item.** Name, category, sub-category, condition, brand, date, price and an original-collection flag, plus a photograph picked from disk &mdash; resized to 320px and JPEG'd in the browser, exactly as the catalog photos were. New items land in the same table as everything else, so they can be renamed, recategorised, boosted or hidden immediately. They are written to `overrides.js` as `__NEW_ITEMS`; the archive maps them onto its own field names on load.
+- **Add a high-resolution photo.** Pick an item, pick a full-size image, and the page hands back exactly the file that belongs in `hi/` — named `<id>.jpg`, resized to 1600px at quality 82, the same treatment the binder scans had. A browser can't write into a folder on the server, so moving the file is the one manual step; there is nothing to export and no code to change. Optionally the 320px card thumbnail is regenerated from the same source at the same time, so the card and the record never disagree.
 - **Export photos.js.** The page already holds every photograph in memory, so it can now write the whole file back out with any new ones folded in, chunked at roughly 600 KB. Adding an item therefore means exporting both files and bumping the `?v=` on the photos.js tag.
 - **Site metrics.** A static file cannot count its own visitors &mdash; something has to receive the hit, so the archive now carries a GoatCounter tag. It counts a pageview on load and fires an event whenever an item record is opened, under `/item/<id>` with the item's name as the title. No cookies and no personal data: a path, a title, a referrer. The admin page opens the dashboard in a new tab rather than framing it: it is kept off the server, and GoatCounter only permits framing from a whitelisted domain. Every call is wrapped, so a blocked or missing counter is a no-op rather than an error.
 
@@ -42,12 +47,22 @@
 - No manifest and no sidecar to rebuild. The record view probes `hi/<id>.jpg` when it opens; if the file is there the pane swaps up to it once decoded, and if it isn't, the 320px version simply stays. Adding a high-resolution photograph is now nothing more than dropping a correctly named JPEG in the folder &mdash; no export step, no code change.
 - Records open on the small version immediately, so there is no empty pane and no flash while the large file loads. A missing file is a silent 404. Each image is cached separately by the browser, and only the opened item's file is ever fetched.
 - This replaces `photos-hi.js`, which is deleted. Base64 inside JavaScript added a third to every file, made all of them download together, and would have rewritten a multi-megabyte blob in git history on every edit &mdash; workable for fourteen items, not for a binder of autographs.
-- The rest of the catalogue cannot be upgraded this way. The other ~700 photographs exist only at the size they were embedded at in v2.0; the eBay originals are gone and the binder scans were downsampled on the way in. Enlarging those would invent detail rather than restore it.
+- The rest of the catalog cannot be upgraded this way. The other ~700 photographs exist only at the size they were embedded at in v2.0; the eBay originals are gone and the binder scans were downsampled on the way in. Enlarging those would invent detail rather than restore it.
 
 **Autographs**
-- The whole binder is in: 173 scans, 187 files in `hi/`, 32.5 MB, all at 1600px. Every autograph record in the catalogue now has a full-size version behind its thumbnail.
-- The leading number in each scan's filename is its catalogue id, which made the matching exact rather than a judgement by eye &mdash; 1 to 173, no gaps and no duplicates.
-- Four scans had no `auto` record: 27, 98, 171 and 172. All four turned out to be pieces catalogued on the inventory side instead, and each was identified by matching the scan against the stored thumbnail rather than by guesswork &mdash; 27 is the Mitch Hedberg ticket (`inv13`), 98 is Mark Hamill (`inv12`), 171 the Gumbel/Seinfeld 8x10 (`inv9`), 172 the Daniel Stern (`inv10`). Three of the four correlate perfectly with the thumbnail already on file, so the identification is not a judgement call. 171 is the piece merged earlier this version, which the album numbering independently confirms.
+- Hugh M. Hefner & Christie Hefner (`auto185`, Misc) — a framed Playboy Enterprises one-year service anniversary certificate. Filed under Autographs as requested but at low confidence and with the authentication flag left empty: both signatures sit in the printed layout in a way that reads as part of the certificate artwork rather than ink applied afterwards. Worth checking against the glass before it counts as a signed piece. Catalog is 829 items, autographs 194.
+- Dr. Hibbert framed 3D wall art (`inv650`, Memorabilia) — a sculpted Simpsons relief in a gold shadow box, hands and forearm breaking out over the frame’s inner edge.
+- Nickelodeon The N promotional notebook (`inv649`, Memorabilia) — silver foil hand logo, the-n.com beneath, branded green pen still clipped into the spiral. Joins the The N blanket already at `inv129`.
+- Blockbuster Video membership card (`inv648`, Memorabilia), original collection, dated to its issue on October 12, 2002. Front and back are composed into a single image, since the catalog shows one photo per record and a membership card without its back is half an object.
+- Don Rickles (`auto184`, Comedy), original collection — a 1995 Barnett Bank arts-sponsorship magazine advertisement, inscribed to Jared and signed across the page. An odd substrate for an autograph, and the second Rickles in the collection after the group page at `auto173`.
+- Tara Strong & Meghan McCarthy (`auto183`, Animation) — a My Little Pony: Friendship is Magic promotional print from Discovery Family and Hasbro Studios, two signatures in red marker across the banner. Filed at medium confidence: the attribution is plausible on every count but neither signature is legible enough to confirm from the piece itself.
+- Conan O'Brien (`auto182`, Comedy) — a childhood school portrait signed across the face in blue marker, sold with a GM Authentic Autos certificate of authenticity. **The signature is not genuine.** Recorded at low confidence with the authentication flag cleared, and kept in the catalog rather than removed: a collection that records what a piece actually is stays more useful than one that quietly drops its mistakes, and the certificate is itself part of the story.
+- Two sports pieces: Pete Rose & Wade Boggs (`auto180`), a spring training photo signed by both, and Andre Dawson (`auto181`), a Florida Marlins photo inscribed with his nickname.
+- Four more added from the binder: Alex Trebek (`auto176`, Television), Sal Governale & Richard Christy (`auto177`, Comedy), Drew Carey (`auto178`, Television) and Miles, the Denver Broncos mascot (`auto179`, Sports). The Trebek is inscribed “thanks for adding me to your collection”; the Stern pair is a SiriusXM still signed by both; Carey's is a Price Is Right photo signed in white marker; the Broncos piece is a Children's Hospital Colorado poster signed across the artwork. 
+- Two new entries, both original collection: Mason Gamble (`auto174`) and Mason Gamble & Walter Matthau (`auto175`). Warner Bros. publicity stills DM-613 and DM-10 from Dennis the Menace (1993), photographed by Theo Westenberger, each inscribed to Jared and signed by Gamble. Filed as two records rather than one because they are two distinct pieces, and the Matthau still would otherwise have been visible nowhere. Catalog is 816 items, autographs 184, original collection 197.
+- The whole binder is in: 173 scans, 187 files in `hi/`, 32.5 MB, all at 1600px. Every autograph record in the catalog now has a full-size version behind its thumbnail.
+- The leading number in each scan's filename is its catalog id, which made the matching exact rather than a judgment by eye &mdash; 1 to 173, no gaps and no duplicates.
+- Four scans had no `auto` record: 27, 98, 171 and 172. All four turned out to be pieces cataloged on the inventory side instead, and each was identified by matching the scan against the stored thumbnail rather than by guesswork &mdash; 27 is the Mitch Hedberg ticket (`inv13`), 98 is Mark Hamill (`inv12`), 171 the Gumbel/Seinfeld 8x10 (`inv9`), 172 the Daniel Stern (`inv10`). Three of the four correlate perfectly with the thumbnail already on file, so the identification is not a judgment call. 171 is the piece merged earlier this version, which the album numbering independently confirms.
 
 **Browsing**
 - The original collection now leads the **All** tab on first load. Any deliberate action &mdash; a category, a sort, a search, a toggle &mdash; drops the pinning for the rest of the session, so it never fights what was actually asked for.
@@ -76,7 +91,7 @@
 **Fixes**
 - The DOSBox window was stacked below the DOS screen and rendered behind it. Raised above.
 - Running DOOM injected the emulator's stylesheet into the page, which restyled every button and tab on the site. The emulator now runs inside an iframe so its CSS can't reach the page.
-- The status bar reported a negative number of items without photographs. It was subtracting both the stored-photo and eBay-link totals from the item count, double-counting everything that had both — by now nearly the whole catalogue.
+- The status bar reported a negative number of items without photographs. It was subtracting both the stored-photo and eBay-link totals from the item count, double-counting everything that had both — by now nearly the whole catalog.
 
 **Notes**
 - DOOM's executable and WAD must come from the same release. A v1.1 engine looks for a split `STABARL`/`STABARR` status bar, which later WADs replaced with a single `STBAR`, and the mismatch stalls startup.
@@ -86,7 +101,7 @@
 ## v2.2
 
 **Admin page**
-- New `admin.html` for editing the catalogue without a rebuild. Change an item's category, sub-category, name or display order, or hide it entirely, then export an `overrides.js` file to upload alongside `index.html`.
+- New `admin.html` for editing the catalog without a rebuild. Change an item's category, sub-category, name or display order, or hide it entirely, then export an `overrides.js` file to upload alongside `index.html`.
 - Search by name, filter by category, or narrow to only-edited, only-hidden, or only-without-photos.
 - Thumbnails shown for every item so you can see what you're moving.
 - Non-destructive: deleting `overrides.js` reverts everything.
@@ -98,8 +113,8 @@
 - Pressing **S** during the boot sequence skips straight to the archive. Undocumented, and limited to the POST phase so it doesn't interfere with typing at the prompt.
 
 **Content**
-- Photographs added for the Puppy Bowl X signed football (dated to its 2 February 2014 premiere), the Daily Show notebook, the Mini Nickelodeon pillow and the Sony Pictures 2003 Preview Kit binder.
-- Every eBay listing in the catalogue now has a photograph — the last dead links, the King of the Hill press kit and the sealed Flight Simulator 5.1, were both filled.
+- Photographs added for the Puppy Bowl X signed football (dated to its February 2, 2014 premiere), the Daily Show notebook, the Mini Nickelodeon pillow and the Sony Pictures 2003 Preview Kit binder.
+- Every eBay listing in the catalog now has a photograph — the last dead links, the King of the Hill press kit and the sealed Flight Simulator 5.1, were both filled.
 - Several low-resolution eBay thumbnails replaced with proper shots.
 
 ---
@@ -110,7 +125,7 @@
 - Shuffle now applies inside every category, not just the combined view, and reseeds each time you switch tabs or sub-filters — a different order every visit.
 - Items with photographs always sort ahead of those without, in every category and every sort mode.
 - Default page size raised from 48 to 75 items.
-- On the **All** tab, recognisable material (autographs, films, games, TV, memorabilia) is weighted toward the top; reference software, utilities and bare hardware sink toward the bottom.
+- On the **All** tab, recognizable material (autographs, films, games, TV, memorabilia) is weighted toward the top; reference software, utilities and bare hardware sink toward the bottom.
 
 **Categories**
 - **Vintage Computing** split into *Software*, *Hardware*, *Microsoft Home*, *Maxis* and *LucasArts*, in that fixed order.
@@ -119,7 +134,7 @@
 
 **Detail view**
 - Item records are wider with a much larger image pane.
-- The ✕ on every window is properly centred — it was drifting off-centre on iOS.
+- The ✕ on every window is properly centered — it was drifting off-centre on iOS.
 - Removed the *ID confidence* row from autographs.
 
 **DOS screen**
@@ -145,7 +160,7 @@
 **Photographs**
 - All 479 recoverable eBay listing photos downloaded and embedded permanently, so the archive no longer depends on eBay. Only 6 listings had photos that were genuinely gone.
 - 173 autograph binder photographs embedded.
-- Photos split into a companion `photos.js` file, cutting the page itself from 8.25 MB to under 450 KB. Images stream in behind the catalogue in chunks so phones stay responsive.
+- Photos split into a companion `photos.js` file, cutting the page itself from 8.25 MB to under 450 KB. Images stream in behind the catalog in chunks so phones stay responsive.
 - Item-specific placeholder icons drawn for items with no photograph — televisions, VR headsets, monitors, cartridges, cels and about twenty more, matched from the item name.
 
 **DOS boot screen**
@@ -170,7 +185,7 @@
 
 ## v1.0
 
-- Initial catalogue built from the household inventory spreadsheet — 648 items across Vintage Computing, Vintage Gaming, Autographs, Press Kits, Laserdisc, VHS, DVD, Electronics, Memorabilia and Trading Cards.
+- Initial catalog built from the household inventory spreadsheet — 648 items across Vintage Computing, Vintage Gaming, Autographs, Press Kits, Laserdisc, VHS, DVD, Electronics, Memorabilia and Trading Cards.
 - Search, category tabs, sort by date, name and price.
 - Item detail view with condition, publisher, location and acquisition date.
 - Photographs loaded live from the eBay links recorded in the spreadsheet.
